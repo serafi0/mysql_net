@@ -1,26 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using waw.Models;
 
 namespace waw.Controllers
 {
-    
-        [Route("api/[controller]")]
-        [ApiController]
-        public class CommandsController : ControllerBase
+
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CommandsController : ControllerBase
+    {
+
+        private readonly CommandContext _context;
+
+        public CommandsController(CommandContext context)
         {
-            [HttpGet]
-            public ActionResult<IEnumerable<string>> GetString()
-            {
-                return new string[] { "this", "is", "hard", "coded" };
-            }
-
-            //private readonly DataContext _context;
-
-            //public PetsController(DataContext context)
-            //{
-            //    _context = context;
-            //}
+            _context = context;
         }
+
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Command>> GetCommandItems()
+        {
+            return _context.CommandItems;
+        }
+
     }
+}
 
