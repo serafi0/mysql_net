@@ -33,15 +33,6 @@ namespace waw.Controllers
 
 
             //return _context.CommandItems;
-            //return _context.CommandItems.ProjectTo<CommandDTO,Command>;
-            //var firstNameQuery = db.People
-            //    .Where(p => p.FirstName == "Joe")
-            //    .ProjectTo<PersonDetail>(mapperConfig);
-            //var ageQuery = db.People
-            //    .Where(p => p.FirstName == "Joe")
-            //    .ProjectTo<PersonDetail>(mapperConfig);
-            //var results = firstNameQuery.Union(ageQuery).ToList();
-            //return _context.CommandItems;
             return Ok(_mapper.Map<IEnumerable<CommandDTO>>(_context.CommandItems));
 
 
@@ -72,12 +63,15 @@ namespace waw.Controllers
 
 
         [HttpPost]
-        public ActionResult<Command> PostCommandItem(Command command)
+        public ActionResult<CommandDTOCreate> PostCommandItem(CommandDTOCreate command_model)
         {
+            var command = _mapper.Map<Command>(command_model);
             _context.CommandItems.Add(command);
+
             _context.SaveChanges();
 
-            return CreatedAtAction("GetCommandItem", new Command { Id = command.Id }, command);
+            //return CreatedAtAction("GetCommandItem", new Command { Id = command.Id }, command);
+            return Ok(command);
         }
 
         [HttpPut("{id}")]

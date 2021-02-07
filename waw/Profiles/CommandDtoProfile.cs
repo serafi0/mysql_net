@@ -9,7 +9,9 @@ namespace waw.Profiles
     {
         public CommandDtoProfile()
         {
+            //Source to target
             CreateMap<Command, CommandDTO>();
+            CreateMap<CommandDTOCreate, Command>();
 
         }
     }
