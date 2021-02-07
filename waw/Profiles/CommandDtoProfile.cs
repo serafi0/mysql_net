@@ -10,6 +10,7 @@ namespace waw.Profiles
         public CommandDtoProfile()
         {
             CreateMap<Command, CommandDTO>();
+
         }
     }
 }

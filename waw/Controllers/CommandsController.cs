@@ -28,7 +28,7 @@ namespace waw.Controllers
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<Command>> GetCommandItems()
+        public ActionResult<IEnumerable<CommandDTO>> GetCommandItems()
         {
 
 
@@ -41,7 +41,9 @@ namespace waw.Controllers
             //    .Where(p => p.FirstName == "Joe")
             //    .ProjectTo<PersonDetail>(mapperConfig);
             //var results = firstNameQuery.Union(ageQuery).ToList();
-            return _context.CommandItems;
+            //return _context.CommandItems;
+            return Ok(_mapper.Map<IEnumerable<CommandDTO>>(_context.CommandItems));
+
 
 
 
