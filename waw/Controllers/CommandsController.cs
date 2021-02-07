@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using waw.Models;
+using waw.ViewModels;
 
 namespace waw.Controllers
 {
@@ -13,20 +17,45 @@ namespace waw.Controllers
     {
 
         private readonly CommandContext _context;
+        private readonly IMapper _mapper;
 
-        public CommandsController(CommandContext context)
+        public CommandsController(CommandContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+
         }
 
 
         [HttpGet]
         public ActionResult<IEnumerable<Command>> GetCommandItems()
         {
+
+
+            //return _context.CommandItems;
+            //return _context.CommandItems.ProjectTo<CommandDTO,Command>;
+            //var firstNameQuery = db.People
+            //    .Where(p => p.FirstName == "Joe")
+            //    .ProjectTo<PersonDetail>(mapperConfig);
+            //var ageQuery = db.People
+            //    .Where(p => p.FirstName == "Joe")
+            //    .ProjectTo<PersonDetail>(mapperConfig);
+            //var results = firstNameQuery.Union(ageQuery).ToList();
             return _context.CommandItems;
+
+
+
+
+
         }
+
+        private ActionResult<IEnumerable<Command>> View(List<CommandDTO> dtos)
+        {
+            throw new NotImplementedException();
+        }
+
         [HttpGet("{id}")]
-        public ActionResult<Command> GetCommandItem(int id)
+        public ActionResult<CommandDTO> GetCommandItem(int id)
         {
             var commandItem = _context.CommandItems.Find(id);
 
@@ -34,7 +63,7 @@ namespace waw.Controllers
             {
                 return NotFound();
             }
-            return commandItem;
+            return _mapper.Map<CommandDTO>(commandItem);
         }
         //[HttpGet("{id}")]
         //public Command Get(int id) => _context.CommandItems.Find(id);

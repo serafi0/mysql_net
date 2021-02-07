@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using waw.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 //using Microsoft.EntityFrameworkCore;
 //using Pomelo.EntityFrameworkCore;
 //using Microsoft.EntityFrameworkCore;
@@ -35,7 +37,13 @@ namespace waw
             //         //services.AddDbContext<CommandContext>(o => o.UseMySQL(connectionString));
             //         services.AddDbContextPool<CommandContext>(ser
 
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
             services.AddDbContext<CommandContext>(option => option.UseMySql(connectionString));
+
+
+            services.AddSwaggerGen();
 
             //options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")
             //));
@@ -49,6 +57,14 @@ namespace waw
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+
+            });
 
             //app.UseEndpoints(endpoints =>
             //{
