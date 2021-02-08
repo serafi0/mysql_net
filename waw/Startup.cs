@@ -11,7 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 using waw.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+//using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
+using Newtonsoft.Json.Serialization;
 
 //using Microsoft.EntityFrameworkCore;
 //using Pomelo.EntityFrameworkCore;
@@ -31,13 +33,14 @@ namespace waw
         [Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(MvcOptions => MvcOptions.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            //services.AddRazorPages();
+            services.AddMvc(MvcOptions => MvcOptions.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_2_2).
+              AddNewtonsoftJson(s => { s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); } );
+            //services.AddRazorPages(); z
             var connectionString = Configuration["mysqlconnection:connectionString"];
             //         //services.AddDbContext<CommandContext>(o => o.UseMySQL(connectionString));
             //         services.AddDbContextPool<CommandContext>(ser
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
 
 
             services.AddDbContext<CommandContext>(option => option.UseMySql(connectionString));

@@ -14,6 +14,8 @@ namespace waw.Profiles
             CreateMap<CommandDTOCreate, Command>();
             CreateMap<CommandDTOUpdate, Command>();
 
+            CreateMap<Command, CommandDTOUpdate>();
+
 
         }
     }

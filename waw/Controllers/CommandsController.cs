@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using waw.Models;
@@ -110,6 +111,35 @@ namespace waw.Controllers
             _context.SaveChanges();
 
             return commandItem;
+        }
+
+
+        [HttpPatch("{id}")]
+        public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandDTOUpdate> patchDoc)
+        {
+            var commandItem = _context.CommandItems.Find(id);
+            if (commandItem == null)
+            {
+                return NotFound();
+
+            }
+
+            var commandToPatch = _mapper.Map<CommandDTOUpdate>(commandItem);
+
+            patchDoc.ApplyTo(commandToPatch, ModelState);
+            if (!TryValidateModel(commandToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(commandToPatch, commandItem);
+            //_context.Entry(commandItem).State = EntityState.Modified;
+            _context.Update(commandItem);
+            _context.SaveChanges();
+
+            return Ok(commandItem);
+
+
         }
     }
 }
