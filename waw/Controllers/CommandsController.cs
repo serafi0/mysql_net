@@ -75,14 +75,20 @@ namespace waw.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult PutCommandItem(int id, Command command)
+        public ActionResult PutCommandItem(int id, CommandDTOUpdate commandDto)
         {
-            if (id != command.Id)
-            {
-                return BadRequest();
 
+            var command_model = _context.CommandItems.Find(id);
+
+            if(command_model == null)
+            {
+                return NotFound();
             }
-            _context.Entry(command).State = EntityState.Modified;
+
+
+            _mapper.Map(commandDto, command_model);
+            _context.Entry(command_model).State = EntityState.Modified;
+
             _context.SaveChanges();
 
             return NoContent();

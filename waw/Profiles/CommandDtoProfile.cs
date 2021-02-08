@@ -12,6 +12,8 @@ namespace waw.Profiles
             //Source to target
             CreateMap<Command, CommandDTO>();
             CreateMap<CommandDTOCreate, Command>();
+            CreateMap<CommandDTOUpdate, Command>();
+
 
         }
     }
